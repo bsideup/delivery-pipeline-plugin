@@ -1,0 +1,23 @@
+{
+  "name": "delivery-pipeline-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Delivery pipeline plugin for Jenkins",
+  "scripts": {
+    "serve": "webpack-dev-server --content-base ./"
+  },
+  "dependencies": {
+    "moment": "^2.2.1",
+    "react": "^0.14.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.2.1",
+    "babel-loader": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "raw-loader": "^0.5.1",
+    "react-dom": "^0.14.3",
+    "webpack": "^1.12.8",
+    "webpack-dev-server": "^1.12.1"
+  }
+}

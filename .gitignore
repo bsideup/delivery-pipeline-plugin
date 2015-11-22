@@ -24,3 +24,7 @@ libsrc/*
 /.project
 /.settings*
 /target/
+
+node/
+node_temp/
+node_modules/
