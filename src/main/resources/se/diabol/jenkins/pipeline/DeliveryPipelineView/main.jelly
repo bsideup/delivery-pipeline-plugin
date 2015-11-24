@@ -33,22 +33,14 @@
     </j:switch>
 
     <div id="delivery-pipeline-view" class="pipeline-main">
-        <div class="pipeline-logo"/>
-
-        <div class="pipelineerror"/>
-
         <div class="pipeline-message"><div class="pipeline-loading-icon"></div></div>
-
-        <j:forEach begin="1" end="${it.noOfColumns}" indexVar="i">
-            <div id="pipelines-${i}" class="left" style="width: ${100/it.noOfColumns}%;"></div>
-        </j:forEach>
-        <div class="clear"></div>
     </div>
 
     <script type="text/javascript">
         __deliveryPipelinePlugin = {
             errorDiv: "pipelineerror",
             view: {
+                viewUrl: '${it.getViewUrl()}',
                 updateInterval: ${it.updateInterval}
             }
         }

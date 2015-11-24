@@ -86,11 +86,9 @@ div.pipeline-row {
 
 div.pipeline-cell {
     display: table-cell;
-    padding-bottom: 30px;
 }
 
 div.stage {
-    margin-right: 60px;
     min-width: 180px;
     border: solid 1px #C8C8C8;
     border-radius: 5px;
@@ -193,7 +191,6 @@ div.task-progress-running {
     -webkit-animation-name: bluePulse;
     -webkit-animation-duration: 1s;
     -webkit-animation-iteration-count: infinite;
-
 }
 
 @keyframes bluePulse {
@@ -281,7 +278,6 @@ div.pipelineerror {
     background-color: red;
     font-size: 22px;
     color: #ffffff;
-    display: none;
 }
 
 div.button-start {
@@ -291,10 +287,6 @@ div.button-start {
 div.pipeline-message {
     font-size: 15px;
     z-index: -50;
-}
-
-._jsPlumb_connector {
-    z-index: -100;
 }
 
 div.infoPanel {
@@ -359,5 +351,3 @@ div.aggregatedChangesPanelInner > ul {
 .promo-time {
     padding-left: 24px;
 }
-
-

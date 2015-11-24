@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-import React from "react"
-import Pipeline from "./Pipeline.jsx"
-import AggregatedPipeline from "./AggregatedPipeline.jsx"
+import React from 'react'
+import Pipeline from './Pipeline.jsx'
+import AggregatedPipeline from './AggregatedPipeline.jsx'
 
 export default class Component extends React.Component {
     buildNow() {
@@ -11,24 +11,26 @@ export default class Component extends React.Component {
         var taskId = component.name;
 
         var before;
-        if (crumb.value != null && crumb.value != "") {
-            console.info("Crumb found and will be added to request header");
-            before = function(xhr){xhr.setRequestHeader(crumb.fieldName, crumb.value);}
+        if (crumb.value != null && crumb.value != '') {
+            console.info('Crumb found and will be added to request header');
+            before = function(xhr) {
+                xhr.setRequestHeader(crumb.fieldName, crumb.value);
+            }
         } else {
-            console.info("Crumb not needed");
-            before = function(xhr){}
+            console.info('Crumb not needed');
+            before = function(xhr) {}
         }
 
         Q.ajax({
-            url: rootURL + "/" + url + 'build?delay=0sec',
-            type: "POST",
+            url: rootURL + '/' + url + 'build?delay=0sec',
+            type: 'POST',
             beforeSend: before,
             timeout: 20000,
-            success: function (data, textStatus, jqXHR) {
-                console.info("Triggered build of " + taskId + " successfully!")
+            success: function(data, textStatus, jqXHR) {
+                console.info('Triggered build of ' + taskId + ' successfully!')
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                window.alert("Could not trigger build! error: " + errorThrown + " status: " + textStatus)
+            error: function(jqXHR, textStatus, errorThrown) {
+                window.alert('Could not trigger build! error: ' + errorThrown + ' status: ' + textStatus)
             }
         });
     }
@@ -38,7 +40,7 @@ export default class Component extends React.Component {
         const component = this.props.component;
 
         if (view.allowPipelineStart) {
-            var imageURL = window.resURL + "/images/24x24/clock.png";
+            var imageURL = window.resURL + '/images/24x24/clock.png';
             var buildNowButton = (<a href="#" className="task-icon-link" onClick={this.buildNow.bind(this)}><img className="icon-clock icon-md" title="Build now" src={imageURL} /></a>)
         }
 
@@ -48,9 +50,16 @@ export default class Component extends React.Component {
         } else {
             body = component.pipelines.map(pipeline => {
                 if (pipeline.aggregated) {
-                    return <AggregatedPipeline {...this.props} pipeline={pipeline}></AggregatedPipeline>
+                    return <AggregatedPipeline key="aggregated" {...this.props} pipeline={pipeline}></AggregatedPipeline>
                 } else {
-                    return <Pipeline {...this.props} pipeline={pipeline}></Pipeline>
+                    if (!pipeline.aggregated) {
+                        const stage = pipeline.stages[0];
+                        const task = stage.tasks[0];
+                        var key = task.buildId;
+                    } else {
+                        var key = `aggregated`;
+                    }
+                    return <Pipeline key={key} {...this.props} pipeline={pipeline}></Pipeline>
                 }
             })
         }

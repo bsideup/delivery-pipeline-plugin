@@ -1,20 +1,22 @@
-"use strict";
+'use strict';
 
-import React from "react"
-import Component from "./Component.jsx"
+import React from 'react'
+import Component from './Component.jsx'
 
 export default class View extends React.Component {
+
     constructor(props) {
         super(props);
+
         this.state = {
             data: {},
             error: null
         };
     }
 
-    loadCommentsFromServer() {
+    loadFromServer() {
         Q.ajax({
-            url: rootURL + "/" + view.viewUrl + 'api/json',
+            url: `${window.rootURL}/${__deliveryPipelinePlugin.view.viewUrl}api/json`,
             dataType: 'json',
             async: true,
             cache: false,
@@ -24,14 +26,13 @@ export default class View extends React.Component {
             },
             error: (xhr, status, error) => {
                 this.setState({error: 'Error communicating to server! ' + error});
-                //TODO Q("#" + errorDiv).html('Error communicating to server! ' + htmlEncode(error)).show();
             }
         });
     }
 
     componentDidMount() {
-        this.loadCommentsFromServer();
-        setInterval(() => this.loadCommentsFromServer(), this.props.updateInterval * 1000);
+        this.loadFromServer();
+        setInterval(() => this.loadFromServer(), this.props.updateInterval * 1000);
     }
 
     render() {
@@ -44,7 +45,7 @@ export default class View extends React.Component {
 
         return <div>
             <div className="pipeline-logo"></div>
-            {(this.state.data.pipelines || []).map((component) => <Component view={this.state.data} component={component}></Component>)}
+            {(this.state.data.pipelines || []).map((component) => <Component key={component.name} view={this.state.data} component={component} />)}
         </div>
     }
 }

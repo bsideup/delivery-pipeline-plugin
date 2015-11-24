@@ -1,23 +1,23 @@
-"use strict";
+'use strict';
 
-export default function (millis) {
+export default function(millis) {
     if (millis > 0) {
-        var seconds = Math.floor(millis / 1000),
-            minutes = Math.floor(seconds / 60),
-            minstr,
-            secstr;
+        var seconds = Math.floor(millis / 1000);
+        var minutes = Math.floor(seconds / 60);
+        var minstr;
+        var secstr;
 
         seconds = seconds % 60;
 
-        if (minutes === 0){
-            minstr = "";
+        if (minutes === 0) {
+            minstr = '';
         } else {
-            minstr = minutes + " min ";
+            minstr = minutes + ' min ';
         }
 
-        secstr = "" + seconds + " sec";
+        secstr = '' + seconds + ' sec';
 
         return minstr + secstr;
     }
-    return "0 sec";
+    return '0 sec';
 }

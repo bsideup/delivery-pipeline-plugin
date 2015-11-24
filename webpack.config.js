@@ -1,7 +1,7 @@
 'use strict';
 
 const path = require('path');
-const webpack = require("webpack");
+const webpack = require('webpack');
 
 const nodeModulePath = path.join(__dirname, '..', '..', '..', 'node_modules');
 
@@ -13,28 +13,19 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'target', 'delivery-pipeline-plugin'),
         filename: 'pipe.js',
-        publicPath: '/static/b182aeab/plugin/delivery-pipeline-plugin/'
+        publicPath: '/static/e17b7987/plugin/delivery-pipeline-plugin/'
     },
     module: {
+        preLoaders: [
+            {
+                test: /\.(jsx|js)?$/,
+                loaders: ['eslint'],
+                exclude: /node_modules/
+            }
+        ],
         loaders: [
             {
-                test: /\.css$/,
-                loader: 'style!css'
-            },
-            {
-                test: /\.js$/,
-                exclude: /(node_modules)/,
-                loader: 'babel',
-                query: {
-                    presets: ['es2015']
-                }
-            },
-            {
-                test: /\.(woff|otf|ttf|eot|svg|png|gif|ico)(.*)?$/,
-                loader: 'file'
-            },
-            {
-                test: /\.jsx$/,
+                test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {
@@ -52,11 +43,16 @@ module.exports = {
     },
     devServer: {
         port: 3000,
-        host: "0.0.0.0",
+        host: '0.0.0.0',
         proxy: {
             '*': {
                 target: 'http://localhost:8080/',
-                secure: false
+                secure: false,
+                bypass: function(req, res, proxyOptions) {
+                    if (req.url.endsWith('/plugin/delivery-pipeline-plugin/pipe.js')) {
+                        return '/target/delivery-pipeline-plugin/pipe.js';
+                    }
+                }
             }
         }
     }
