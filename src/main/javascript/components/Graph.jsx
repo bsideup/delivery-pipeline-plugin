@@ -4,10 +4,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Stage from './Stage.jsx';
 
-import formatDate from '../utils/formatDate.js'
-import formatDuration from '../utils/formatDuration.js'
+import formatDate from '../utils/formatDate.js';
+import formatDuration from '../utils/formatDuration.js';
 
-import dagre from 'dagre'
+import dagre from 'dagre';
 
 class GraphStage extends React.Component {
 
@@ -43,7 +43,7 @@ class GraphEdge extends React.Component {
             path += (i == 0 ? 'M' : 'L') + `${points[i].x} ${points[i].y} `;
         }
 
-        return <path className="connect" d={path} stroke="#888888" strokeWidth="2" fill="none" />
+        return <path className="connect" d={path} stroke="#888888" strokeWidth="2" fill="none" />;
     }
 }
 
@@ -59,7 +59,7 @@ export default class Graph extends React.Component {
     }
 
     componentDidMount() {
-        this.componentDidUpdate()
+        this.componentDidUpdate();
     }
 
     componentDidUpdate() {
@@ -100,11 +100,11 @@ export default class Graph extends React.Component {
 
             edge.input.setState({
                 points: edge.points
-            })
+            });
         }
 
         if (this.state.width !== maxWidth || this.state.height !== maxHeight) {
-            this.setState({ width: maxWidth, height: maxHeight })
+            this.setState({ width: maxWidth, height: maxHeight });
         }
     }
 
@@ -126,7 +126,7 @@ export default class Graph extends React.Component {
             g.setNode(stage.name, { stage });
 
             for (let downstreamStage of stage.downstreamStages) {
-                g.setEdge(stage.name, downstreamStage)
+                g.setEdge(stage.name, downstreamStage);
             }
         }
 

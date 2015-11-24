@@ -26,7 +26,7 @@ class StaticAnalysisResult extends React.Component {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>;
     }
 }
 
@@ -41,6 +41,6 @@ export default class StaticAnalysisResults extends React.Component {
 
         return <div className="infoPanelOuter">
             {task.staticAnalysisResults.map(analysis => <StaticAnalysisResult {...this.props} analysis={analysis} />)}
-        </div>
+        </div>;
     }
 }

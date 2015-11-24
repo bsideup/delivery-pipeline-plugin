@@ -1,13 +1,13 @@
 'use strict';
 
 import React from 'react';
-import formatDuration from '../utils/formatDuration.js'
-import formatDate from '../utils/formatDate.js'
+import formatDuration from '../utils/formatDuration.js';
+import formatDate from '../utils/formatDate.js';
 
-import Description from './widgets/Description.jsx'
-import TestResults from './widgets/TestResults.jsx'
-import StaticAnalysisResults from './widgets/StaticAnalysisResults.jsx'
-import Promotions from './widgets/Promotions.jsx'
+import Description from './widgets/Description.jsx';
+import TestResults from './widgets/TestResults.jsx';
+import StaticAnalysisResults from './widgets/StaticAnalysisResults.jsx';
+import Promotions from './widgets/Promotions.jsx';
 
 export default class Task extends React.Component {
 
@@ -25,11 +25,11 @@ export default class Task extends React.Component {
             console.info('Crumb found and will be added to request header');
             before = function(xhr) {
                 xhr.setRequestHeader(crumb.fieldName, crumb.value);
-            }
+            };
         } else {
             console.info('Crumb not needed');
             before = function(xhr) {
-            }
+            };
         }
 
         Q.ajax({
@@ -60,11 +60,11 @@ export default class Task extends React.Component {
             console.info('Crumb found and will be added to request header');
             before = function(xhr) {
                 xhr.setRequestHeader(crumb.fieldName, crumb.value);
-            }
+            };
         } else {
             console.info('Crumb not needed');
             before = function(xhr) {
-            }
+            };
         }
 
         Q.ajax({
@@ -74,10 +74,10 @@ export default class Task extends React.Component {
             beforeSend: before,
             timeout: 20000,
             success: function(data, textStatus, jqXHR) {
-                console.info(`Triggered rebuild of ${project} successfully!`)
+                console.info(`Triggered rebuild of ${project} successfully!`);
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                window.alert(`Could not trigger rebuild! error: ${errorThrown} status: ${textStatus}`)
+                window.alert(`Could not trigger rebuild! error: ${errorThrown} status: ${textStatus}`);
             }
         });
     }
@@ -111,6 +111,6 @@ export default class Task extends React.Component {
             {<TestResults {...this.props} />}
             {<StaticAnalysisResults {...this.props} />}
             {<Promotions {...this.props} />}
-        </div>
+        </div>;
     }
 }

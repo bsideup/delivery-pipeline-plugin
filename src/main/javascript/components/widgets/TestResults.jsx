@@ -26,7 +26,7 @@ class TestResult extends React.Component {
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div>;
     }
 }
 
@@ -41,6 +41,6 @@ export default class TestResults extends React.Component {
 
         return <div className="infoPanelOuter">
             {task.testResults.map(analysis => <TestResult {...this.props} analysis={analysis} />)}
-        </div>
+        </div>;
     }
 }

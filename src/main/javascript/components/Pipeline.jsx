@@ -1,14 +1,14 @@
 'use strict';
 
-import React from 'react'
-import Stage from './Stage.jsx'
+import React from 'react';
+import Stage from './Stage.jsx';
 
-import formatDate from '../utils/formatDate.js'
-import formatDuration from '../utils/formatDuration.js'
+import formatDate from '../utils/formatDate.js';
+import formatDuration from '../utils/formatDuration.js';
 
-import dagre from 'dagre'
+import dagre from 'dagre';
 
-import Graph from './Graph.jsx'
+import Graph from './Graph.jsx';
 
 class TriggeredBy extends React.Component {
     render() {
@@ -24,7 +24,7 @@ export default class Pipeline extends React.Component {
         const pipeline = this.props.pipeline;
 
         if ((pipeline.triggeredBy || []).length > 0) {
-            var triggeredBy = <span> triggered by {pipeline.triggeredBy.map(trigger => <TriggeredBy key="trigger.type" trigger={trigger}/>)}</span>
+            var triggeredBy = <span> triggered by {pipeline.triggeredBy.map(trigger => <TriggeredBy key="trigger.type" trigger={trigger}/>)}</span>;
         }
 
         if ((pipeline.contributors || []).length > 0) {
@@ -67,9 +67,9 @@ export default class Pipeline extends React.Component {
                     {change.changeLink ? <a href={change.changeLink}>{commitId}</a> : commitId }
                     <div className="change-author">{change.author.name}</div>
                     <div className="change-message">{change.message}</div>
-                </div>
+                </div>;
             })}
-        </div>
+        </div>;
     }
 
     render() {
@@ -82,6 +82,6 @@ export default class Pipeline extends React.Component {
                     <Graph {...this.props} />
                 </div>
             </section>
-        </div>
+        </div>;
     }
 }

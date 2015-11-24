@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import Task from './Task.jsx'
+import Task from './Task.jsx';
 
 export default class Stage extends React.Component {
     render() {
@@ -19,6 +19,6 @@ export default class Stage extends React.Component {
 
                 {stage.tasks.map(task => <Task key={task.id} {...this.props} task={task}></Task>)}
             </div>
-        </div>
+        </div>;
     }
 }

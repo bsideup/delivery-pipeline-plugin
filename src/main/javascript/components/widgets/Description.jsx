@@ -15,6 +15,6 @@ export default class Description extends React.Component {
             <div className="infoPanel">
                 <div className="infoPanelInner" dangerouslySetInnerHTML={{__html: task.description}} />
             </div>
-        </div>
+        </div>;
     }
 }

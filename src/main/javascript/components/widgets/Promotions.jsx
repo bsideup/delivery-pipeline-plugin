@@ -17,7 +17,7 @@ class Promotion extends React.Component {
                 <span className="promo-time">{formatDuration(promo.time)}</span><br/>
                 {(promo.params || []).map(param => <span>{param}<br /></span>)}
             </div>
-        </div>
+        </div>;
     }
 }
 
@@ -32,6 +32,6 @@ export default class Promotions extends React.Component {
 
         return <div className="infoPanelOuter">
             {task.status.promotions.map(promo => <Promotion {...this.props} promo={promo} />)}
-        </div>
+        </div>;
     }
 }
