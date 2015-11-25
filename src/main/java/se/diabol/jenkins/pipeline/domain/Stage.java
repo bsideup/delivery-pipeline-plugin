@@ -59,8 +59,6 @@ public class Stage extends AbstractItem {
     private List<Task> tasks;
 
     private String version;
-    private int row;
-    private int column;
     private Map<String, List<String>> taskConnections;
     private List<String> downstreamStages;
     private List<Long> downstreamStageIds;
@@ -75,16 +73,14 @@ public class Stage extends AbstractItem {
 
     private Stage(Stage stage, List<Task> tasks, String version, long id) {
         this(stage.getName(), tasks, stage.getDownstreamStages(), stage.getDownstreamStageIds(), stage.getTaskConnections(), version,
-                stage.getRow(), stage.getColumn(), id);
+                id);
     }
 
     private Stage(String name, List<Task> tasks, List<String> downstreamStages, List<Long> downstreamStageIds, Map<String,
-            List<String>> taskConnections, String version, int row, int column, long id) {
+            List<String>> taskConnections, String version, long id) {
         super(name);
         this.tasks = tasks;
         this.version = version;
-        this.row = row;
-        this.column = column;
         this.downstreamStages = downstreamStages;
         this.taskConnections = taskConnections;
         this.downstreamStageIds = downstreamStageIds;
@@ -99,24 +95,6 @@ public class Stage extends AbstractItem {
     @Exported
     public String getVersion() {
         return version;
-    }
-
-    @Exported
-    public int getRow() {
-        return row;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    @Exported
-    public int getColumn() {
-        return column;
-    }
-
-    public void setColumn(int column) {
-        this.column = column;
     }
 
     @Exported
@@ -255,19 +233,8 @@ public class Stage extends AbstractItem {
                 return stages2.size() - stages1.size();
             }
         });
-        for (int row = allPaths.size() - 1; row >= 0; row--) {
-            List<Stage> path = allPaths.get(row);
-            for (int column = 0; column < path.size(); column++) {
-                Stage stage = path.get(column);
-                stage.setColumn(Math.max(stage.getColumn(), column));
-                stage.setRow(row);
-            }
-        }
-        List<Stage> result = new ArrayList<Stage>(stages);
 
-        sortByRowsCols(result);
-
-        return result;
+        return new ArrayList<Stage>(stages);
     }
 
     private static Map<String, List<String>> getStageConnections(Stage stage, Collection<Stage> stages) {
@@ -306,21 +273,6 @@ public class Stage extends AbstractItem {
         }
         return paths;
     }
-
-    protected static void sortByRowsCols(List<Stage> stages) {
-        Collections.sort(stages, new Comparator<Stage>() {
-            @Override
-            public int compare(Stage stage1, Stage stage2) {
-                int result = Integer.valueOf(stage1.getRow()).compareTo(stage2.getRow());
-                if (result == 0) {
-                    return Integer.valueOf(stage1.getColumn()).compareTo(stage2.getColumn());
-                } else {
-                    return result;
-                }
-            }
-        });
-    }
-
 
     private static List<Stage> getDownstreamStages(Stage stage, Collection<Stage> stages) {
         List<Stage> result = newArrayList();
