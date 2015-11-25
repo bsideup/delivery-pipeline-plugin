@@ -20,11 +20,8 @@ package se.diabol.jenkins.pipeline.util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 
 public final class PipelineUtils {
-    private static final Random RANDOM = new Random(System.currentTimeMillis());
-
 
     private PipelineUtils() {
     }
@@ -32,10 +29,6 @@ public final class PipelineUtils {
     public static String formatTimestamp(long timestamp) {
         DateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         return f.format(new Date(timestamp));
-    }
-
-    public static long getRandom() {
-        return RANDOM.nextLong();
     }
 
 }

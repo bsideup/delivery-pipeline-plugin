@@ -32,7 +32,6 @@ import org.kohsuke.stapler.export.ExportedBean;
 import se.diabol.jenkins.pipeline.PipelineProperty;
 import se.diabol.jenkins.pipeline.domain.task.Task;
 import se.diabol.jenkins.pipeline.util.BuildUtil;
-import se.diabol.jenkins.pipeline.util.PipelineUtils;
 import se.diabol.jenkins.pipeline.util.ProjectUtil;
 
 import javax.annotation.CheckForNull;
@@ -40,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,32 +57,23 @@ public class Stage extends AbstractItem {
     private List<Task> tasks;
 
     private String version;
-    private Map<String, List<String>> taskConnections;
     private List<String> downstreamStages;
-    private List<Long> downstreamStageIds;
-    private long id;
     private Set<Change> changes = new HashSet<Change>();
 
     public Stage(String name, List<Task> tasks) {
         super(name);
         this.tasks = ImmutableList.copyOf(tasks);
-        this.id = PipelineUtils.getRandom();
     }
 
-    private Stage(Stage stage, List<Task> tasks, String version, long id) {
-        this(stage.getName(), tasks, stage.getDownstreamStages(), stage.getDownstreamStageIds(), stage.getTaskConnections(), version,
-                id);
+    private Stage(Stage stage, List<Task> tasks, String version) {
+        this(stage.getName(), tasks, stage.getDownstreamStages(), version);
     }
 
-    private Stage(String name, List<Task> tasks, List<String> downstreamStages, List<Long> downstreamStageIds, Map<String,
-            List<String>> taskConnections, String version, long id) {
+    private Stage(String name, List<Task> tasks, List<String> downstreamStages, String version) {
         super(name);
         this.tasks = tasks;
         this.version = version;
         this.downstreamStages = downstreamStages;
-        this.taskConnections = taskConnections;
-        this.downstreamStageIds = downstreamStageIds;
-        this.id = id;
     }
 
     @Exported
@@ -107,35 +96,12 @@ public class Stage extends AbstractItem {
     }
 
     @Exported
-    public Map<String, List<String>> getTaskConnections() {
-        return taskConnections;
-    }
-
-    @Exported
-    public long getId() {
-        return id;
-    }
-
-    @Exported
-    public List<Long> getDownstreamStageIds() {
-        return downstreamStageIds;
-    }
-
-    public void setDownstreamStageIds(List<Long> downstreamStageIds) {
-        this.downstreamStageIds = downstreamStageIds;
-    }
-
-    @Exported
     public Set<Change> getChanges() {
         return changes;
     }
 
     public void setChanges(Set<Change> changes) {
         this.changes = changes;
-    }
-
-    public void setTaskConnections(Map<String, List<String>> taskConnections) {
-        this.taskConnections = taskConnections;
     }
 
     public static Stage getPrototypeStage(String name, List<Task> tasks) {
@@ -183,7 +149,7 @@ public class Stage extends AbstractItem {
         for (Task task : getTasks()) {
             stageTasks.add(task.getAggregatedTask(versionBuild, context));
         }
-        return new Stage(this, stageTasks, stageVersion, id);
+        return new Stage(this, stageTasks, stageVersion);
     }
 
 
@@ -192,7 +158,7 @@ public class Stage extends AbstractItem {
         for (Task task : getTasks()) {
             stageTasks.add(task.getLatestTask(context, firstBuild));
         }
-        return new Stage(this, stageTasks, null, id);
+        return new Stage(this, stageTasks, null);
 
     }
 
@@ -200,19 +166,15 @@ public class Stage extends AbstractItem {
     public static List<Stage> placeStages(AbstractProject firstProject, Collection<Stage> stages) throws PipelineException {
         DirectedGraph<Stage, Edge> graph = new SimpleDirectedGraph<Stage, Edge>(new StageEdgeFactory());
         for (Stage stage : stages) {
-            stage.setTaskConnections(getStageConnections(stage, stages));
             graph.addVertex(stage);
             List<Stage> downstreamStages = getDownstreamStages(stage, stages);
             List<String> downstreamStageNames = new ArrayList<String>();
-            List<Long> downstreamStageIds = new ArrayList<Long>();
             for (Stage downstream : downstreamStages) {
                 downstreamStageNames.add(downstream.getName());
-                downstreamStageIds.add(downstream.getId());
                 graph.addVertex(downstream);
                 graph.addEdge(stage, downstream, new Edge(stage, downstream));
             }
             stage.setDownstreamStages(downstreamStageNames);
-            stage.setDownstreamStageIds(downstreamStageIds);
 
         }
 
@@ -235,25 +197,6 @@ public class Stage extends AbstractItem {
         });
 
         return new ArrayList<Stage>(stages);
-    }
-
-    private static Map<String, List<String>> getStageConnections(Stage stage, Collection<Stage> stages) {
-        Map<String, List<String>> result = new HashMap<String, List<String>>();
-        for (int i = 0; i < stage.getTasks().size(); i++) {
-            Task task = stage.getTasks().get(i);
-            for (int j = 0; j < task.getDownstreamTasks().size(); j++) {
-                String downstreamTask = task.getDownstreamTasks().get(j);
-                Stage target = findStageForJob(downstreamTask, stages);
-                if (!stage.equals(target)) {
-                    if (result.get(task.getId()) == null) {
-                        result.put(task.getId(), new ArrayList<String>(singleton(downstreamTask)));
-                    } else {
-                        result.get(task.getId()).add(downstreamTask);
-                    }
-                }
-            }
-        }
-        return result;
     }
 
     private static List<List<Stage>> findAllRunnablePaths(Stage start, DirectedGraph<Stage, Edge> graph) {
