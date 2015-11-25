@@ -1,0 +1,77 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "new-cap": 0,
+    "strict": [2, "global"],
+
+    // Always require curly braces in loops and conditionals
+    "curly": 2,
+
+    // All immediate function invocations must be wrapped in parenthesis.
+    "wrap-iife": 2,
+
+    // *** Variables ***
+    // Disallow using vars before defined (except functions)
+    "no-use-before-define": [2, "nofunc"],
+    // Allow declaring the same variable twice (useful convenience)
+    "no-redeclare": 0,
+
+
+    // *** Stylistic issues ***
+    // Consistent brace-style with else-clauses on new line.
+    "brace-style": [2, "1tbs", { "allowSingleLine": false }],
+
+    // 4 space indentation
+    "indent": [2, 4, {"SwitchCase": 1}],
+
+    // Only LF line breaks
+    "linebreak-style": [2, "unix"],
+
+    // Single quotes everywhere
+    "quotes": [2, "single"],
+
+    // No mandatory space between operators
+    "space-infix-ops": 0,
+
+    // Disallow multiple empty lines
+    "no-multiple-empty-lines": [2, {"max": 1}],
+
+    // Permit __underscore _prefixes
+    "no-underscore-dangle": 2,
+
+    // Disallow combining multiple var declarations into one.
+    "one-var": [2, "never"],
+
+    // Require operators at the ends of lines
+    "operator-linebreak": [2, "after"],
+
+    // Require space after keywords
+    "space-after-keywords": 2,
+
+    // Require space before blocks
+    "space-before-blocks": 2,
+
+    // Disallow "function ()", prefer "function()"
+    "space-before-function-paren": [2, "never"],
+
+    // Require space after line comments.
+    "spaced-comment": 2,
+
+    // Require semicolon
+    semi: [2, "always"],
+
+    "eol-last": 2,
+
+    "jsx-quotes": 2,
+    "react/jsx-no-undef": 2,
+    "react/jsx-uses-react": 2,
+    "react/jsx-uses-vars": 2
+  }
+}
