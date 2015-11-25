@@ -92,7 +92,7 @@ export default class Task extends React.Component {
             trigger = <div className="task-rebuild" title="Trigger rebuild" onClick={this.triggerRebuild.bind(this)}></div>;
         }
 
-        return <div>
+        return (<div>
             <div className={`stage-task ${task.status.type}`}>
                 <div className={'task-progress ' + (task.status.percentage ? 'task-progress-running' : 'task-progress-notrunning')} style={{width:(task.status.percentage || 100) + '%'}}>
                     <div className="task-content">
@@ -111,6 +111,6 @@ export default class Task extends React.Component {
             {<TestResults {...this.props} />}
             {<StaticAnalysisResults {...this.props} />}
             {<Promotions {...this.props} />}
-        </div>;
+        </div>);
     }
 }

@@ -50,7 +50,7 @@ export default class Component extends React.Component {
         } else {
             body = component.pipelines.map(pipeline => {
                 if (pipeline.aggregated) {
-                    return <AggregatedPipeline key="aggregated" {...this.props} pipeline={pipeline}></AggregatedPipeline>;
+                    return <AggregatedPipeline key="aggregated" {...this.props} pipeline={pipeline} />;
                 } else {
                     if (!pipeline.aggregated) {
                         const stage = pipeline.stages[0];
@@ -59,14 +59,14 @@ export default class Component extends React.Component {
                     } else {
                         var key = `aggregated`;
                     }
-                    return <Pipeline key={key} {...this.props} pipeline={pipeline}></Pipeline>;
+                    return <Pipeline key={key} {...this.props} pipeline={pipeline} />;
                 }
             });
         }
 
-        return <section className="left pipeline-component">
+        return (<section className="left pipeline-component">
             <h1>{component.name} {buildNowButton}</h1>
             {body}
-        </section>;
+        </section>);
     }
 }

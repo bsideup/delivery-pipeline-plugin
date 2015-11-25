@@ -29,10 +29,10 @@ export default class Description extends React.Component {
             return false;
         }
 
-        return <div className="infoPanelOuter">
+        return (<div className="infoPanelOuter">
             <div className="infoPanel">
                 <div className="infoPanelInner" dangerouslySetInnerHTML={{__html: task.description}} />
             </div>
-        </div>;
+        </div>);
     }
 }

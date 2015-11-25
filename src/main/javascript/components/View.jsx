@@ -38,14 +38,14 @@ export default class View extends React.Component {
     render() {
         if (this.state.error) {
             const style = {display: 'block !important'};
-            return <div>
+            return (<div>
                 <div className="pipelineerror" style={style}>{this.state.error}</div>
-            </div>;
+            </div>);
         }
 
-        return <div>
+        return (<div>
             <div className="pipeline-logo"></div>
             {(this.state.data.pipelines || []).map((component) => <Component key={component.name} view={this.state.data} component={component} />)}
-        </div>;
+        </div>);
     }
 }

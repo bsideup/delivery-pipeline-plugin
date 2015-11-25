@@ -6,7 +6,7 @@ class StaticAnalysisResult extends React.Component {
     render() {
         const analysis = this.props.analysis;
 
-        return <div className="infoPanel">
+        return (<div className="infoPanel">
             <div className="infoPanelInner">
                 <a href={`${window.rootURL}/${analysis.url}`}>{analysis.name}</a>
                 <table id="priority.summary" className="pane">
@@ -26,7 +26,7 @@ class StaticAnalysisResult extends React.Component {
                     </tbody>
                 </table>
             </div>
-        </div>;
+        </div>);
     }
 }
 
@@ -39,8 +39,8 @@ export default class StaticAnalysisResults extends React.Component {
             return false;
         }
 
-        return <div className="infoPanelOuter">
-            {task.staticAnalysisResults.map(analysis => <StaticAnalysisResult {...this.props} analysis={analysis} />)}
-        </div>;
+        return (<div className="infoPanelOuter">
+            {task.staticAnalysisResults.map(analysis => <StaticAnalysisResult key={analysis.name} {...this.props} analysis={analysis} />)}
+        </div>);
     }
 }

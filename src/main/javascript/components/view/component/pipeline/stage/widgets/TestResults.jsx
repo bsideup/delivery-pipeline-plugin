@@ -4,11 +4,11 @@ import React from 'react';
 
 class TestResult extends React.Component {
     render() {
-        const analysis = this.props.analysis;
+        const result = this.props.result;
 
-        return <div className="infoPanel">
+        return (<div className="infoPanel">
             <div className="infoPanelInner">
-                <a href={`${window.rootURL}/${analysis.url}`}>{analysis.name}</a>
+                <a href={`${window.rootURL}/${result.url}`}>{result.name}</a>
                 <table id="priority.summary" className="pane">
                     <tbody>
                         <tr>
@@ -19,14 +19,14 @@ class TestResult extends React.Component {
                     </tbody>
                     <tbody>
                         <tr>
-                            <td className="pane">{analysis.total}</td>
-                            <td className="pane">{analysis.failed}</td>
-                            <td className="pane">{analysis.skipped}</td>
+                            <td className="pane">{result.total}</td>
+                            <td className="pane">{result.failed}</td>
+                            <td className="pane">{result.skipped}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>;
+        </div>);
     }
 }
 
@@ -39,8 +39,8 @@ export default class TestResults extends React.Component {
             return false;
         }
 
-        return <div className="infoPanelOuter">
-            {task.testResults.map(analysis => <TestResult {...this.props} analysis={analysis} />)}
-        </div>;
+        return (<div className="infoPanelOuter">
+            {task.testResults.map(result => <TestResult key={result.name} {...this.props} result={result} />)}
+        </div>);
     }
 }

@@ -12,15 +12,15 @@ export default class Stage extends React.Component {
             var version = <div className="stage-version">{stage.version || 'N/A'}</div>;
         }
 
-        return <div className="pipeline-cell">
+        return (<div className="pipeline-cell">
             <div className="stage">
                 <div className="stage-header">
                     <div className="stage-name">{stage.name}</div>
                     {version}
                 </div>
 
-                {stage.tasks.map(task => <Task key={task.id} {...this.props} task={task}></Task>)}
+                {stage.tasks.map(task => <Task key={task.id} {...this.props} task={task} />)}
             </div>
-        </div>;
+        </div>);
     }
 }

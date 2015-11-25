@@ -28,12 +28,12 @@ export default class Pipeline extends React.Component {
             var contributors = <span> changes by {pipeline.contributors.join(', ')}</span>;
         }
 
-        return <h2>
+        return (<h2>
             {pipeline.version}
             {triggeredBy}
             {contributors}
             &nbsp;started <span>{formatDate(pipeline.timestamp, view.lastUpdated)}</span>
-        </h2>;
+        </h2>);
     }
 
     renderTotalBuildTime() {
@@ -55,22 +55,22 @@ export default class Pipeline extends React.Component {
             return undefined;
         }
 
-        return <div className="changes">
+        return (<div className="changes">
             <h1>Changes:</h1>
             {pipeline.changes.map(change => {
                 const commitId = <div className="change-commit-id">{change.commitId}</div>;
 
-                return <div className="change">
-                    {change.changeLink ? <a href={change.changeLink}>{commitId}</a> : commitId }
+                return (<div className="change">
+                    {change.changeLink ? <a href={change.changeLink}>{commitId}</a> : commitId}
                     <div className="change-author">{change.author.name}</div>
                     <div className="change-message">{change.message}</div>
-                </div>;
+                </div>);
             })}
-        </div>;
+        </div>);
     }
 
     render() {
-        return <div style={{marginBottom: 20}}>
+        return (<div style={{marginBottom: 20}}>
             {this.renderHeader()}
             {this.renderTotalBuildTime()}
             {this.renderChangeLog()}
@@ -79,6 +79,6 @@ export default class Pipeline extends React.Component {
                     <Graph {...this.props} />
                 </div>
             </section>
-        </div>;
+        </div>);
     }
 }

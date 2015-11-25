@@ -21,9 +21,9 @@ class GraphStage extends React.Component {
     }
 
     render() {
-        return <div style={{ position: 'absolute', left: this.state.x, top: this.state.y }}>
+        return (<div style={{ position: 'absolute', left: this.state.x, top: this.state.y }}>
             <Stage {...this.props} stage={this.props.stage} />
-        </div>;
+        </div>);
     }
 }
 
@@ -42,8 +42,7 @@ class GraphEdge extends React.Component {
         for (var i = 0; i < points.length; i++) {
             path += (i == 0 ? 'M' : 'L') + `${points[i].x} ${points[i].y} `;
         }
-
-        return <path className="connect" d={path} stroke="#888888" strokeWidth="2" fill="none" />;
+        return <path className="connect" d={path} stroke="#888888" strokeWidth="2" fill="none" />; // eslint-disable-line react/jsx-pascal-case
     }
 }
 
@@ -135,11 +134,11 @@ export default class Graph extends React.Component {
             }
         }
 
-        return <div style={{position: 'relative', width: this.state.width, height: this.state.height}}>
+        return (<div style={{position: 'relative', width: this.state.width, height: this.state.height}}>
             <svg width={this.state.width} height={this.state.height}>
                 {g.edges().map(id => <GraphEdge key={`${id.v}=>${id.w}`} ref={input => g.edge(id).input = input} />)}
             </svg>
             {g.nodes().map(id => <GraphStage key={id} {...this.props} stage={g.node(id).stage} ref={input => g.node(id).input = input} />)}
-        </div>;
+        </div>);
     }
 }
