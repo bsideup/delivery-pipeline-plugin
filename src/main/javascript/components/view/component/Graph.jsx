@@ -2,10 +2,10 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Stage from './Stage.jsx';
+import Stage from './pipeline/Stage.jsx';
 
-import formatDate from '../utils/formatDate.js';
-import formatDuration from '../utils/formatDuration.js';
+import formatDate from 'utils/formatDate.js';
+import formatDuration from 'utils/formatDuration.js';
 
 import dagre from 'dagre';
 
@@ -56,6 +56,11 @@ export default class Graph extends React.Component {
             width: 0,
             height: 0
         };
+    }
+
+    shouldComponentUpdate() {
+        // TODO
+        return true;
     }
 
     componentDidMount() {

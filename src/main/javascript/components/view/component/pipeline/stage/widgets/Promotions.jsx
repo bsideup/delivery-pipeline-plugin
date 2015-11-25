@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import formatDuration from '../../utils/formatDuration.js';
+import formatDuration from 'utils/formatDuration.js';
 
 class Promotion extends React.Component {
     render() {

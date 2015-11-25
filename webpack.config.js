@@ -36,6 +36,10 @@ module.exports = {
         noParse: /min\.js/
     },
     resolve: {
+        root: [
+            path.resolve(__dirname, 'src', 'main', 'javascript'),
+            path.resolve(__dirname, 'node_modules')
+        ],
         extensions: ['', '.js', '.jsx']
     },
     resolveLoader: {

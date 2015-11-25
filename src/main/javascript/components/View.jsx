@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import Component from './Component.jsx';
+import Component from './view/Component.jsx';
 
 export default class View extends React.Component {
 

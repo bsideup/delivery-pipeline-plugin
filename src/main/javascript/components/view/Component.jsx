@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import Pipeline from './Pipeline.jsx';
-import AggregatedPipeline from './AggregatedPipeline.jsx';
+import Pipeline from './component/Pipeline.jsx';
+import AggregatedPipeline from './component/AggregatedPipeline.jsx';
 
 export default class Component extends React.Component {
     buildNow() {

@@ -1,14 +1,11 @@
 'use strict';
 
 import React from 'react';
-import Stage from './Stage.jsx';
-
-import formatDate from '../utils/formatDate.js';
-import formatDuration from '../utils/formatDuration.js';
-
-import dagre from 'dagre';
 
 import Graph from './Graph.jsx';
+
+import formatDate from 'utils/formatDate.js';
+import formatDuration from 'utils/formatDuration.js';
 
 class TriggeredBy extends React.Component {
     render() {

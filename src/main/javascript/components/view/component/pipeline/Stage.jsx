@@ -1,14 +1,16 @@
 'use strict';
 
 import React from 'react';
-import Task from './Task.jsx';
+import Task from './stage/Task.jsx';
 
 export default class Stage extends React.Component {
     render() {
         const pipeline = this.props.pipeline;
         const stage = this.props.stage;
 
-        const version = pipeline.aggregated ? <div className="stage-version">{stage.version || 'N/A'}</div> : undefined;
+        if (pipeline.aggregated) {
+            var version = <div className="stage-version">{stage.version || 'N/A'}</div>;
+        }
 
         return <div className="pipeline-cell">
             <div className="stage">

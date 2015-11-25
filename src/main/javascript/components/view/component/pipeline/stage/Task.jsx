@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import formatDuration from '../utils/formatDuration.js';
-import formatDate from '../utils/formatDate.js';
+import formatDuration from 'utils/formatDuration.js';
+import formatDate from 'utils/formatDate.js';
 
 import Description from './widgets/Description.jsx';
 import TestResults from './widgets/TestResults.jsx';
