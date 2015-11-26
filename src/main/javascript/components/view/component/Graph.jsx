@@ -37,36 +37,29 @@ class GraphEdge extends React.Component {
     }
 
     render() {
-        const points = this.state.points;
-        var path = '';
-        for (var i = 0; i < points.length; i++) {
-            path += (i == 0 ? 'M' : 'L') + `${points[i].x} ${points[i].y} `;
+        let points = this.state.points;
+
+        if (!points || points.length < 2) {
+            points = [{x: 0, y: 0}];
         }
-        return <path className="connect" d={path} stroke="#888888" strokeWidth="2" fill="none" />; // eslint-disable-line react/jsx-pascal-case
+
+        const d = 'M' + points.map(point => `${point.x} ${point.y}`).join(' L');
+
+        return <path className="connect" d={d} stroke="#888888" strokeWidth="2" fill="none" />;
     }
 }
 
 export default class Graph extends React.Component {
 
-    constructor() {
-        super();
-
-        this.state = {
-            width: 0,
-            height: 0
-        };
-    }
-
-    shouldComponentUpdate() {
-        // TODO
-        return true;
-    }
-
     componentDidMount() {
-        this.componentDidUpdate();
+        this.layout();
     }
 
     componentDidUpdate() {
+        this.layout();
+    }
+
+    layout() {
         const g = this.g;
 
         // Adjust node sizes
@@ -107,15 +100,18 @@ export default class Graph extends React.Component {
             });
         }
 
-        if (this.state.width !== maxWidth || this.state.height !== maxHeight) {
-            this.setState({ width: maxWidth, height: maxHeight });
-        }
+        const domNode = ReactDOM.findDOMNode(this);
+
+        // Kids, don't try this at home :)
+        // We set it here because at the moment of render we don't know width/height of nodes
+        domNode.style.width = `${maxWidth}px`;
+        domNode.style.height = `${maxHeight}px`;
     }
 
     render() {
         const {pipeline} = this.props;
 
-        const g = this.g = new dagre.graphlib.Graph({compound: true});
+        const g = this.g = new dagre.graphlib.Graph();
         g.setGraph({
             nodesep: 20,
             ranksep: 20,
@@ -134,8 +130,8 @@ export default class Graph extends React.Component {
             }
         }
 
-        return (<div style={{position: 'relative', width: this.state.width, height: this.state.height}}>
-            <svg width={this.state.width} height={this.state.height}>
+        return (<div style={{position: 'relative', width: '100%', height: '100%'}}>
+            <svg width="100%" height="100%">
                 {g.edges().map(id => <GraphEdge key={`${id.v}=>${id.w}`} ref={input => g.edge(id).input = input} />)}
             </svg>
             {g.nodes().map(id => <GraphStage key={id} {...this.props} stage={g.node(id).stage} ref={input => g.node(id).input = input} />)}
