@@ -9,6 +9,8 @@
   "dependencies": {
     "dagre": "^0.7.4",
     "graphlib": "^2.0.0",
+    "immutable": "^3.7.5",
+    "immutablediff": "^0.4.2",
     "moment": "^2.2.1",
     "react": "^0.14.3"
   },

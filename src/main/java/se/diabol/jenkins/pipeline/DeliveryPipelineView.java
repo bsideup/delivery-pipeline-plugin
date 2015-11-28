@@ -174,6 +174,7 @@ public class DeliveryPipelineView extends View {
         this.noOfPipelines = noOfPipelines;
     }
 
+    @Exported
     public boolean isShowChanges() {
         return showChanges;
     }

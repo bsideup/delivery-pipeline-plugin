@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Component from './view/Component.jsx';
+import {Map, List} from 'immutable';
 
 export default class View extends React.Component {
 
@@ -9,7 +10,7 @@ export default class View extends React.Component {
         super(props);
 
         this.state = {
-            data: {},
+            data: Map(),
             error: null
         };
     }
@@ -21,8 +22,16 @@ export default class View extends React.Component {
             async: true,
             cache: false,
             timeout: 20000,
-            success: (data) => {
-                this.setState({ data });
+            success: (response) => {
+                const components = response.pipelines;
+
+                response.jobs = undefined;
+                response.pipelines = undefined;
+                response.lastUpdated = undefined;
+
+                this.setState(({ data }) => ({
+                    data: data.mergeDeep({components, view: response})
+                }));
             },
             error: (xhr, status, error) => {
                 this.setState({error: 'Error communicating to server! ' + error});
@@ -36,16 +45,14 @@ export default class View extends React.Component {
     }
 
     render() {
-        if (this.state.error) {
-            const style = {display: 'block !important'};
-            return (<div>
-                <div className="pipelineerror" style={style}>{this.state.error}</div>
-            </div>);
+        const {error, data} = this.state;
+        if (error) {
+            return <div className="pipelineerror">{error}</div>;
         }
 
         return (<div>
             <div className="pipeline-logo"></div>
-            {(this.state.data.pipelines || []).map((component) => <Component key={component.name} view={this.state.data} component={component} />)}
+            {(data.get('components') || []).map(component => <Component key={component.get('name')} view={data.get('view')} component={component} />)}
         </div>);
     }
 }

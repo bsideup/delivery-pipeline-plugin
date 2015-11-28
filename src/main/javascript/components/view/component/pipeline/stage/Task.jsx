@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
+import moment from 'moment';
 import formatDuration from 'utils/formatDuration.js';
-import formatDate from 'utils/formatDate.js';
 
 import Description from './widgets/Description.jsx';
 import TestResults from './widgets/TestResults.jsx';
@@ -14,9 +14,10 @@ export default class Task extends React.Component {
     triggerManual() {
         const { task } = this.props;
 
-        var project = task.id;
-        var upstream = task.manualStep.upstreamProject;
-        var buildId = task.manualStep.upstreamId;
+        var project = task.get('id');
+        const manualStep = task.get('manualStep');
+        var upstream = manualStep.get('upstreamProject');
+        var buildId = manualStep.get('upstreamId');
 
         var formData = {project, upstream, buildId};
         var before;
@@ -50,10 +51,9 @@ export default class Task extends React.Component {
 
     triggerRebuild() {
         const { task } = this.props;
-        var project = task.id;
-        var buildId = task.buildId;
+        var project = task.get('id');
 
-        var formData = {project: project, buildId: buildId};
+        var formData = {project: project, buildId: task.get('buildId')};
 
         var before;
         if (crumb.value != null && crumb.value != '') {
@@ -86,23 +86,32 @@ export default class Task extends React.Component {
         const { view, pipeline, task } = this.props;
 
         var trigger;
-        if (view.allowManualTriggers && task.manual && task.manualStep.enabled && task.manualStep.permission) {
+        if (view.get('allowManualTriggers') && task.get('manual') && task.get('manualStep').get('enabled') && task.get('manualStep').get('permission')) {
             trigger = <div className="task-manual" title="Trigger manual build" onClick={this.triggerManual.bind(this)}></div>;
-        } else if (!pipeline.aggregated && view.allowRebuild && task.rebuildable) {
+        } else if (!pipeline.get('aggregated') && view.get('allowRebuild') && task.get('rebuildable')) {
             trigger = <div className="task-rebuild" title="Trigger rebuild" onClick={this.triggerRebuild.bind(this)}></div>;
         }
 
+        const status = task.get('status');
+        const type = status.get('type');
+        const percentage = type === 'RUNNING' ? status.get('percentage') : undefined;
+
+        const timestamp = status.get('timestamp');
+        if (timestamp) {
+            var timestampNode = <div className="timestamp">{moment(timestamp).fromNow()}</div>;
+        }
+
         return (<div>
-            <div className={`stage-task ${task.status.type}`}>
-                <div className={'task-progress ' + (task.status.percentage ? 'task-progress-running' : 'task-progress-notrunning')} style={{width:(task.status.percentage || 100) + '%'}}>
+            <div className={`stage-task ${type}`}>
+                <div className={'task-progress ' + (percentage ? 'task-progress-running' : 'task-progress-notrunning')} style={{width:(percentage || 100) + '%'}}>
                     <div className="task-content">
                         <div className="task-header">
-                            <div className="taskname"><a href={`${window.rootURL}/${task.link}`}>{task.name}</a></div>
+                            <div className="taskname"><a href={`${window.rootURL}/${task.get('link')}`}>{task.get('name')}</a></div>
                             {trigger}
                         </div>
                         <div className="task-details">
-                            <div className="timestamp">{formatDate(task.status.timestamp, view.lastUpdated)}</div>
-                            {task.status.duration > 0 ? <div className="duration">{formatDuration(task.status.duration)}</div>: undefined}
+                            {timestampNode}
+                            {status.get('duration') > 0 ? <div className="duration">{formatDuration(status.get('duration'))}</div>: undefined}
                         </div>
                     </div>
                 </div>

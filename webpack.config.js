@@ -7,13 +7,15 @@ const nodeModulePath = path.join(__dirname, '..', '..', '..', 'node_modules');
 
 module.exports = {
     debug: true,
+    cache: true,
+    devtool: 'source-map',
     entry: {
         app: path.join(__dirname, 'src', 'main', 'javascript', 'app')
     },
     output: {
         path: path.join(__dirname, 'target', 'delivery-pipeline-plugin'),
         filename: 'pipe.js',
-        publicPath: '/static/e17b7987/plugin/delivery-pipeline-plugin/'
+        publicPath: '/static/efce61a1/plugin/delivery-pipeline-plugin/'
     },
     module: {
         preLoaders: [

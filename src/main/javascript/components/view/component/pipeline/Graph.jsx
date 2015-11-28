@@ -2,14 +2,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Stage from './pipeline/Stage.jsx';
-
-import formatDate from 'utils/formatDate.js';
-import formatDuration from 'utils/formatDuration.js';
-
 import dagre from 'dagre';
 
-class GraphStage extends React.Component {
+class GraphNode extends React.Component {
 
     constructor() {
         super();
@@ -22,7 +17,7 @@ class GraphStage extends React.Component {
 
     render() {
         return (<div style={{ position: 'absolute', left: this.state.x, top: this.state.y }}>
-            <Stage {...this.props} stage={this.props.stage} />
+            {this.props.nodeRenderer(this.props)}
         </div>);
     }
 }
@@ -43,7 +38,7 @@ class GraphEdge extends React.Component {
             points = [{x: 0, y: 0}];
         }
 
-        const d = 'M' + points.map(point => `${point.x} ${point.y}`).join(' L');
+        const d = 'M' + points.map(({x, y}) => `${x} ${y}`).join(' L');
 
         return <path className="connect" d={d} stroke="#888888" strokeWidth="2" fill="none" />;
     }
@@ -66,31 +61,14 @@ export default class Graph extends React.Component {
         for (let nodeId of g.nodes()) {
             const node = g.node(nodeId);
 
-            const element = ReactDOM.findDOMNode(node.input);
+            const {offsetWidth, offsetHeight} = ReactDOM.findDOMNode(node.input);
 
-            node.width = element.offsetWidth;
-            node.height = element.offsetHeight;
+            node.width = offsetWidth;
+            node.height = offsetHeight;
         }
 
         // Re-layout
         dagre.layout(g);
-
-        let maxWidth = 0;
-        let maxHeight = 0;
-        for (let nodeId of g.nodes()) {
-            const node = g.node(nodeId);
-
-            const width = node.width;
-            const height = node.height;
-
-            node.input.setState({
-                x: node.x - width * 0.5,
-                y: node.y - height * 0.5
-            });
-
-            maxWidth = Math.max(maxWidth, node.x + width * 0.5);
-            maxHeight = Math.max(maxHeight, node.y + height * 0.5);
-        }
 
         for (let edgeId of g.edges()) {
             const edge = g.edge(edgeId);
@@ -98,6 +76,22 @@ export default class Graph extends React.Component {
             edge.input.setState({
                 points: edge.points
             });
+        }
+
+        let maxWidth = 0;
+        let maxHeight = 0;
+        for (let nodeId of g.nodes()) {
+            const node = g.node(nodeId);
+
+            const {x, y, width, height} = node;
+
+            node.input.setState({
+                x: x - width * 0.5,
+                y: y - height * 0.5
+            });
+
+            maxWidth = Math.max(maxWidth, x + width * 0.5);
+            maxHeight = Math.max(maxHeight, y + height * 0.5);
         }
 
         const domNode = ReactDOM.findDOMNode(this);
@@ -109,32 +103,39 @@ export default class Graph extends React.Component {
     }
 
     render() {
-        const {pipeline} = this.props;
+        const {nodes, edges} = this.props;
 
         const g = this.g = new dagre.graphlib.Graph();
+
         g.setGraph({
             nodesep: 20,
             ranksep: 20,
             rankdir: 'LR',
             align: 'UL'
         });
+
         g.setDefaultEdgeLabel(() => {
             return {};
         });
 
-        for (let stage of pipeline.stages) {
-            g.setNode(stage.name, { stage });
+        for (let node of nodes) {
+            g.setNode(node.id, node);
+        }
 
-            for (let downstreamStage of stage.downstreamStages) {
-                g.setEdge(stage.name, downstreamStage);
+        for (let from of Object.keys(edges)) {
+            for (let to of edges[from]) {
+                g.setEdge(from, to);
             }
         }
 
-        return (<div style={{position: 'relative', width: '100%', height: '100%'}}>
+        return (<div style={{position: 'relative'}}>
             <svg width="100%" height="100%">
                 {g.edges().map(id => <GraphEdge key={`${id.v}=>${id.w}`} ref={input => g.edge(id).input = input} />)}
             </svg>
-            {g.nodes().map(id => <GraphStage key={id} {...this.props} stage={g.node(id).stage} ref={input => g.node(id).input = input} />)}
+            {g.nodes().map(id => {
+                const node = g.node(id);
+                return <GraphNode key={id} node={node} nodeRenderer={this.props.nodeRenderer} ref={input => node.input = input} />;
+            })}
         </div>);
     }
 }

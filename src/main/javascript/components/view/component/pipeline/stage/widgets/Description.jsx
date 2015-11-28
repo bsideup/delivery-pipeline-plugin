@@ -7,13 +7,14 @@ export default class Description extends React.Component {
     render() {
         const { view, task } = this.props;
 
-        if (!view.showDescription || !task.description) {
+        const description = task.get('description');
+        if (!view.get('showDescription') || !description) {
             return false;
         }
 
         return (<div className="infoPanelOuter">
             <div className="infoPanel">
-                <div className="infoPanelInner" dangerouslySetInnerHTML={{__html: task.description}} />
+                <div className="infoPanelInner" dangerouslySetInnerHTML={{__html: description}} />
             </div>
         </div>);
     }

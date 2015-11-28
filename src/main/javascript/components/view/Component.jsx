@@ -1,14 +1,14 @@
 'use strict';
 
 import React from 'react';
+import immutablediff from 'immutablediff';
+
 import Pipeline from './component/Pipeline.jsx';
 import AggregatedPipeline from './component/AggregatedPipeline.jsx';
 
 export default class Component extends React.Component {
     buildNow() {
         const component = this.props.component;
-        var url = component.firstJobUrl;
-        var taskId = component.name;
 
         var before;
         if (crumb.value != null && crumb.value != '') {
@@ -22,12 +22,12 @@ export default class Component extends React.Component {
         }
 
         Q.ajax({
-            url: rootURL + '/' + url + 'build?delay=0sec',
+            url: rootURL + '/' + component.get('firstJobUrl') + 'build?delay=0sec',
             type: 'POST',
             beforeSend: before,
             timeout: 20000,
             success: function(data, textStatus, jqXHR) {
-                console.info('Triggered build of ' + taskId + ' successfully!');
+                console.info('Triggered build of ' + component.get('name') + ' successfully!');
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 window.alert('Could not trigger build! error: ' + errorThrown + ' status: ' + textStatus);
@@ -35,37 +35,44 @@ export default class Component extends React.Component {
         });
     }
 
-    render() {
-        const view = this.props.view;
-        const component = this.props.component;
+    shouldComponentUpdate(nextProps) {
+        if (!nextProps.view.equals(this.props.view)) {
+            return true;
+        }
 
-        if (view.allowPipelineStart) {
+        if (!nextProps.component.equals(this.props.component)) {
+            // Uncomment this line to get powerful overview of changes
+            // console.table(immutablediff(this.props.component, nextProps.component).toJS());
+            return true;
+        }
+
+        return false;
+    }
+
+    render() {
+        const {view, component} = this.props;
+
+        if (view.get('allowPipelineStart')) {
             var imageURL = window.resURL + '/images/24x24/clock.png';
-            var buildNowButton = (<a href="#" className="task-icon-link" onClick={this.buildNow.bind(this)}><img className="icon-clock icon-md" title="Build now" src={imageURL} /></a>);
+            var buildNowButton = (<a href="#" className="task-icon-link" onClick={() => this.buildNow()}><img className="icon-clock icon-md" title="Build now" src={imageURL} /></a>);
         }
 
         var body;
-        if (!component.pipelines) {
+        const pipelines = component.get('pipelines');
+        if (!pipelines || pipelines.isEmpty()) {
             body = <div>No builds done yet.</div>;
         } else {
-            body = component.pipelines.map(pipeline => {
-                if (pipeline.aggregated) {
+            body = pipelines.map(pipeline => {
+                if (pipeline.get('aggregated')) {
                     return <AggregatedPipeline key="aggregated" {...this.props} pipeline={pipeline} />;
                 } else {
-                    if (!pipeline.aggregated) {
-                        const stage = pipeline.stages[0];
-                        const task = stage.tasks[0];
-                        var key = task.buildId;
-                    } else {
-                        var key = `aggregated`;
-                    }
-                    return <Pipeline key={key} {...this.props} pipeline={pipeline} />;
+                    return <Pipeline key={pipeline.get('stages').get(0).get('tasks').get(0).get('buildId')} {...this.props} pipeline={pipeline} />;
                 }
             });
         }
 
         return (<section className="left pipeline-component">
-            <h1>{component.name} {buildNowButton}</h1>
+            <h1>{component.get('name')} {buildNowButton}</h1>
             {body}
         </section>);
     }

@@ -115,11 +115,6 @@ public class Pipeline extends AbstractItem {
         return contributors;
     }
 
-    @Exported
-    public int getId() {
-        return hashCode();
-    }
-
     public void setChanges(List<Change> changes) {
         this.changes = changes;
     }
@@ -272,7 +267,6 @@ public class Pipeline extends AbstractItem {
     @Override
     public String toString() {
         return toStringHelper(this)
-                .add("id", getId())
                 .add("name", getName())
                 .add("version", getVersion())
                 .add("stages", getStages())

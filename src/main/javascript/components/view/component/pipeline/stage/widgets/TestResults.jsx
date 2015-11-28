@@ -8,7 +8,7 @@ class TestResult extends React.Component {
 
         return (<div className="infoPanel">
             <div className="infoPanelInner">
-                <a href={`${window.rootURL}/${result.url}`}>{result.name}</a>
+                <a href={`${window.rootURL}/${result.get('url')}`}>{result.get('name')}</a>
                 <table id="priority.summary" className="pane">
                     <tbody>
                         <tr>
@@ -19,9 +19,9 @@ class TestResult extends React.Component {
                     </tbody>
                     <tbody>
                         <tr>
-                            <td className="pane">{result.total}</td>
-                            <td className="pane">{result.failed}</td>
-                            <td className="pane">{result.skipped}</td>
+                            <td className="pane">{result.get('total')}</td>
+                            <td className="pane">{result.get('failed')}</td>
+                            <td className="pane">{result.get('skipped')}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -35,12 +35,13 @@ export default class TestResults extends React.Component {
         const view = this.props.view;
         const task = this.props.task;
 
-        if (!view.showTestResults || !task.testResults) {
+        const testResults = task.get('testResults');
+        if (!view.get('showTestResults') || !testResults || testResults.isEmpty()) {
             return false;
         }
 
         return (<div className="infoPanelOuter">
-            {task.testResults.map(result => <TestResult key={result.name} {...this.props} result={result} />)}
+            {testResults.map(result => <TestResult key={result.get('name')} {...this.props} result={result} />)}
         </div>);
     }
 }
