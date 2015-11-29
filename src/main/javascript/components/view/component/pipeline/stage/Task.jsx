@@ -14,9 +14,9 @@ export default class Task extends React.Component {
     triggerManual() {
         const { task } = this.props;
 
-        var {id: project, manualStep: {upstreamProject: upstream, upstreamId: buildId}} = task;
+        var { id: project, manualStep: { upstreamProject: upstream, upstreamId: buildId } } = task;
 
-        var formData = {project, upstream, buildId};
+        var formData = { project, upstream, buildId };
 
         var before;
         if (crumb.value !== null && crumb.value !== '') {
@@ -50,7 +50,7 @@ export default class Task extends React.Component {
         const { task } = this.props;
         var project = task.id;
 
-        var formData = {project: project, buildId: task.buildId};
+        var formData = { project: project, buildId: task.buildId };
 
         var before;
         if (crumb.value != null && crumb.value != '') {
@@ -94,7 +94,7 @@ export default class Task extends React.Component {
             trigger = <div className="task-rebuild" title="Trigger rebuild" onClick={this.triggerRebuild.bind(this)}></div>;
         }
 
-        const {status: {type, timestamp, duration, percentage}} = task;
+        const { status: { type, timestamp, duration, percentage } } = task;
 
         if (timestamp) {
             var timestampNode = <div className="timestamp">{moment(timestamp).fromNow()}</div>;
@@ -102,7 +102,7 @@ export default class Task extends React.Component {
 
         return (<div>
             <div className={`stage-task ${type}`}>
-                <div className={'task-progress ' + (type === 'RUNNING' ? 'task-progress-running' : 'task-progress-notrunning')} style={{width:(percentage || 100) + '%'}}>
+                <div className={'task-progress ' + (type === 'RUNNING' ? 'task-progress-running' : 'task-progress-notrunning')} style={{ width:(percentage || 100) + '%' }}>
                     <div className="task-content">
                         <div className="task-header">
                             <div className="taskname"><a href={`${window.rootURL}/${task.link}`}>{task.name}</a></div>

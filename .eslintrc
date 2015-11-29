@@ -67,6 +67,10 @@
     // Require semicolon
     "semi": [2, "always"],
 
+    "object-curly-spacing": [2, "always"],
+    "computed-property-spacing": [2, "never"],
+    "array-bracket-spacing": [2, "never"],
+
     "eol-last": 2,
 
     "jsx-quotes": 2,

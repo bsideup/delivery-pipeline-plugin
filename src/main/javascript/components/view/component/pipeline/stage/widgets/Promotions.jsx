@@ -6,7 +6,7 @@ import formatDuration from 'utils/formatDuration.js';
 
 class Promotion extends React.Component {
     render() {
-        const {promo: {icon, name, user, params, time}, link} = this.props;
+        const { promo: { icon, name, user, params, time }, link } = this.props;
 
         return (<div className="infoPanel">
             <div className="infoPanelInner">
@@ -22,7 +22,7 @@ class Promotion extends React.Component {
 
 export default class Promotions extends React.Component {
     render() {
-        const {view: {showPromotions}, task: {link, status: {promotions, promoted}}} = this.props;
+        const { view: { showPromotions }, task: { link, status: { promotions, promoted } } } = this.props;
 
         if (!showPromotions || !promoted || !promotions || promotions.isEmpty()) {
             return false;

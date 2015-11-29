@@ -52,7 +52,7 @@ export default class Component extends React.Component {
     }
 
     render() {
-        const {view, component: {pipelines, name}} = this.props;
+        const { view, component: { pipelines, name } } = this.props;
 
         if (view.allowPipelineStart) {
             var imageURL = window.resURL + '/images/24x24/clock.png';

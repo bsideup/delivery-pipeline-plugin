@@ -3,7 +3,7 @@
 import React from 'react';
 import Immutable from 'immutable';
 
-import {ViewRecord, DataRecord, ComponentRecord} from 'domain/Records.js';
+import { DataRecord } from 'domain/Records.js';
 import Component from './view/Component.jsx';
 
 export default class View extends React.Component {
@@ -12,7 +12,7 @@ export default class View extends React.Component {
         super(props);
 
         this.state = {
-            data: DataRecord({components: []}),
+            data: DataRecord({ components: [] }),
             error: null
         };
     }
@@ -25,10 +25,10 @@ export default class View extends React.Component {
             cache: false,
             timeout: 20000,
             success: (response) => {
-                this.setState(({ data }) => ({ data: data.merge({view: response, components: response.pipelines}) }));
+                this.setState(({ data }) => ({ data: data.merge({ view: response, components: response.pipelines }) }));
             },
             error: (xhr, status, error) => {
-                this.setState({error: 'Error communicating to server! ' + error});
+                this.setState({ error: 'Error communicating to server! ' + error });
             }
         });
     }
@@ -39,7 +39,7 @@ export default class View extends React.Component {
     }
 
     render() {
-        const {error, data: {view, components}} = this.state;
+        const { error, data: { view, components } } = this.state;
 
         return (<div>
             {error ? <div className="pipelineerror">{error}</div> : undefined}

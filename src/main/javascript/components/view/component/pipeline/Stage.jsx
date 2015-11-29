@@ -14,7 +14,7 @@ export default class Stage extends React.Component {
     }
 
     render() {
-        const {view, showVersion, stage} = this.props;
+        const { view, showVersion, stage } = this.props;
 
         if (showVersion) {
             var version = <div className="stage-version">{stage.version || 'N/A'}</div>;

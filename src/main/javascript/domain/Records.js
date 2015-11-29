@@ -1,6 +1,6 @@
 'use strict';
 
-import {Maybe, Record, List, Any} from 'typed-immutable';
+import { Maybe, Record, List, Any } from 'typed-immutable';
 
 const oldSet = Record.prototype.set;
 Record.prototype.set = function(key, value) {
@@ -64,21 +64,11 @@ export const StageRecord = Record({
     downstreamStages: List(String)
 });
 
-export const UserInfoRecord = Record({
-    name: String,
-    url: String
-});
-
 export const PipelineChangeRecord = Record({
     message: String,
     commitId: String,
     changeLink: String,
-    author: UserInfoRecord
-});
-
-export const TriggerCauseRecord = Record({
-    type: String,
-    description: String
+    author: Record({ name: String, url: String })
 });
 
 export const PipelineRecord = Record({
@@ -87,7 +77,7 @@ export const PipelineRecord = Record({
     aggregated: Boolean,
     stages: List(StageRecord),
     changes: List(PipelineChangeRecord),
-    triggeredBy: List(TriggerCauseRecord),
+    triggeredBy: List(Record({ type: String, description: String })),
     contributors: List(String)
 });
 

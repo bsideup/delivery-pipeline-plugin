@@ -4,7 +4,7 @@ import React from 'react';
 
 class TestResult extends React.Component {
     render() {
-        const {result: {url, name, total, failed, skipped}} = this.props;
+        const { result: { url, name, total, failed, skipped } } = this.props;
 
         return (<div className="infoPanel">
             <div className="infoPanelInner">
@@ -32,7 +32,7 @@ class TestResult extends React.Component {
 
 export default class TestResults extends React.Component {
     render() {
-        const {view: {showTestResults}, task: {testResults}} = this.props;
+        const { view: { showTestResults }, task: { testResults } } = this.props;
 
         if (!showTestResults || !testResults || testResults.isEmpty()) {
             return false;

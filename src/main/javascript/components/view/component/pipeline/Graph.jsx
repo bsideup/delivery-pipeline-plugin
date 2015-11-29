@@ -35,10 +35,10 @@ class GraphEdge extends React.Component {
         let points = this.state.points;
 
         if (!points || points.length < 2) {
-            points = [{x: 0, y: 0}];
+            points = [{ x: 0, y: 0 }];
         }
 
-        const d = 'M' + points.map(({x, y}) => `${x} ${y}`).join(' L');
+        const d = 'M' + points.map(({ x, y }) => `${x} ${y}`).join(' L');
 
         return <path className="connect" d={d} stroke="#888888" strokeWidth="2" fill="none" />;
     }
@@ -61,7 +61,7 @@ export default class Graph extends React.Component {
         for (let nodeId of g.nodes()) {
             const node = g.node(nodeId);
 
-            const {offsetWidth, offsetHeight} = ReactDOM.findDOMNode(node.input);
+            const { offsetWidth, offsetHeight } = ReactDOM.findDOMNode(node.input);
 
             node.width = offsetWidth;
             node.height = offsetHeight;
@@ -83,7 +83,7 @@ export default class Graph extends React.Component {
         for (let nodeId of g.nodes()) {
             const node = g.node(nodeId);
 
-            const {x, y, width, height} = node;
+            const { x, y, width, height } = node;
 
             node.input.setState({
                 x: x - width * 0.5,
@@ -103,7 +103,7 @@ export default class Graph extends React.Component {
     }
 
     render() {
-        const {nodes, edges} = this.props;
+        const { nodes, edges } = this.props;
 
         const g = this.g = new dagre.graphlib.Graph();
 
@@ -128,7 +128,7 @@ export default class Graph extends React.Component {
             }
         }
 
-        return (<div style={{position: 'relative'}}>
+        return (<div style={{ position: 'relative' }}>
             <svg width="100%" height="100%">
                 {g.edges().map(id => <GraphEdge key={`${id.v}=>${id.w}`} ref={input => g.edge(id).input = input} />)}
             </svg>

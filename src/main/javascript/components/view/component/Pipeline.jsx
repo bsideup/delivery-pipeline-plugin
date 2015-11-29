@@ -10,7 +10,7 @@ import formatDuration from 'utils/formatDuration.js';
 
 class Change extends React.Component {
     render() {
-        const {commitId, changeLink, author, message} = this.props.change;
+        const { commitId, changeLink, author, message } = this.props.change;
         let commitIdNode = <div className="change-commit-id">{commitId}</div>;
 
         if (changeLink) {
@@ -33,11 +33,11 @@ export default class Pipeline extends React.Component {
     }
 
     renderHeader() {
-        const {pipeline} = this.props;
+        const { pipeline } = this.props;
 
         const triggeredBy = pipeline.triggeredBy;
         if (triggeredBy && !triggeredBy.isEmpty()) {
-            var triggeredByNode = (<span> triggered by {triggeredBy.map(({type, description}) => {
+            var triggeredByNode = (<span> triggered by {triggeredBy.map(({ type, description }) => {
                 return <span key={type} className={type}>{description}</span>;
             })}</span>);
         }
@@ -56,7 +56,7 @@ export default class Pipeline extends React.Component {
     }
 
     renderTotalBuildTime() {
-        const {view, pipeline} = this.props;
+        const { view, pipeline } = this.props;
 
         if (!view.showTotalBuildTime) {
             return undefined;
@@ -66,7 +66,7 @@ export default class Pipeline extends React.Component {
     }
 
     renderChangeLog() {
-        const {view, pipeline} = this.props;
+        const { view, pipeline } = this.props;
 
         const changes = pipeline.changes;
 
@@ -81,14 +81,14 @@ export default class Pipeline extends React.Component {
     }
 
     render() {
-        const {view, pipeline: {stages, aggregated}} = this.props;
+        const { view, pipeline: { stages, aggregated } } = this.props;
 
         const nodes = [];
         const edges = {};
         for (let stage of stages) {
             const id = stage.name;
 
-            nodes.push({id, stage});
+            nodes.push({ id, stage });
 
             for (let downstreamStage of stage.downstreamStages) {
                 (edges[id] = edges[id] || []).push(downstreamStage);
@@ -97,7 +97,7 @@ export default class Pipeline extends React.Component {
 
         const nodeRenderer = (props) => <Stage view={view} showVersion={aggregated} stage={props.node.stage} />; // eslint-disable-line react/jsx-key
 
-        return (<div style={{marginBottom: 20}}>
+        return (<div style={{ marginBottom: 20 }}>
             {this.renderHeader()}
             {this.renderTotalBuildTime()}
             {this.renderChangeLog()}

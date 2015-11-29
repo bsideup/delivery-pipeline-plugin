@@ -4,7 +4,7 @@ import React from 'react';
 
 class StaticAnalysisResult extends React.Component {
     render() {
-        const {url, name, high, normal, low} = this.props.analysis;
+        const { url, name, high, normal, low } = this.props.analysis;
 
         return (<div className="infoPanel">
             <div className="infoPanelInner">
@@ -32,7 +32,7 @@ class StaticAnalysisResult extends React.Component {
 
 export default class StaticAnalysisResults extends React.Component {
     render() {
-        const {view: {showStaticAnalysisResults}, task: {staticAnalysisResults}} = this.props;
+        const { view: { showStaticAnalysisResults }, task: { staticAnalysisResults } } = this.props;
 
         if (!showStaticAnalysisResults || !staticAnalysisResults || staticAnalysisResults.isEmpty()) {
             return false;
