@@ -3,7 +3,7 @@
 import React from 'react';
 import Immutable from 'immutable';
 
-import { DataRecord } from 'domain/Records.js';
+import DataRecord from 'domain/DataRecord.js';
 import Component from './view/Component.jsx';
 
 export default class View extends React.Component {
@@ -12,7 +12,7 @@ export default class View extends React.Component {
         super(props);
 
         this.state = {
-            data: DataRecord({ components: [] }),
+            data: new DataRecord({ components: [] }),
             error: null
         };
     }
