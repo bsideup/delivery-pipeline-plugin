@@ -22,12 +22,12 @@ export default class Component extends React.Component {
         }
 
         Q.ajax({
-            url: rootURL + '/' + component.get('firstJobUrl') + 'build?delay=0sec',
+            url: rootURL + '/' + component.firstJobUrl + 'build?delay=0sec',
             type: 'POST',
             beforeSend: before,
             timeout: 20000,
             success: function(data, textStatus, jqXHR) {
-                console.info('Triggered build of ' + component.get('name') + ' successfully!');
+                console.info('Triggered build of ' + component.name + ' successfully!');
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 window.alert('Could not trigger build! error: ' + errorThrown + ' status: ' + textStatus);
@@ -37,6 +37,8 @@ export default class Component extends React.Component {
 
     shouldComponentUpdate(nextProps) {
         if (!nextProps.view.equals(this.props.view)) {
+            // Uncomment this line to get powerful overview of changes
+            // console.table(immutablediff(this.props.view, nextProps.view).toJS());
             return true;
         }
 
@@ -50,29 +52,28 @@ export default class Component extends React.Component {
     }
 
     render() {
-        const {view, component} = this.props;
+        const {view, component: {pipelines, name}} = this.props;
 
-        if (view.get('allowPipelineStart')) {
+        if (view.allowPipelineStart) {
             var imageURL = window.resURL + '/images/24x24/clock.png';
             var buildNowButton = (<a href="#" className="task-icon-link" onClick={() => this.buildNow()}><img className="icon-clock icon-md" title="Build now" src={imageURL} /></a>);
         }
 
         var body;
-        const pipelines = component.get('pipelines');
         if (!pipelines || pipelines.isEmpty()) {
             body = <div>No builds done yet.</div>;
         } else {
             body = pipelines.map(pipeline => {
-                if (pipeline.get('aggregated')) {
-                    return <AggregatedPipeline key="aggregated" {...this.props} pipeline={pipeline} />;
+                if (pipeline.aggregated) {
+                    return <AggregatedPipeline key="aggregated" view={view} pipeline={pipeline} />;
                 } else {
-                    return <Pipeline key={pipeline.get('stages').get(0).get('tasks').get(0).get('buildId')} {...this.props} pipeline={pipeline} />;
+                    return <Pipeline key={pipeline.stages.get(0).tasks.get(0).buildId} view={view} pipeline={pipeline} />;
                 }
             });
         }
 
         return (<section className="left pipeline-component">
-            <h1>{component.get('name')} {buildNowButton}</h1>
+            <h1>{name} {buildNowButton}</h1>
             {body}
         </section>);
     }

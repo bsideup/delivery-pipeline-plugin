@@ -1,8 +1,10 @@
 'use strict';
 
 import React from 'react';
+import Immutable from 'immutable';
+
+import {ViewRecord, DataRecord, ComponentRecord} from 'domain/Records.js';
 import Component from './view/Component.jsx';
-import {Map, List} from 'immutable';
 
 export default class View extends React.Component {
 
@@ -10,7 +12,7 @@ export default class View extends React.Component {
         super(props);
 
         this.state = {
-            data: Map(),
+            data: DataRecord({components: []}),
             error: null
         };
     }
@@ -23,15 +25,7 @@ export default class View extends React.Component {
             cache: false,
             timeout: 20000,
             success: (response) => {
-                const components = response.pipelines;
-
-                response.jobs = undefined;
-                response.pipelines = undefined;
-                response.lastUpdated = undefined;
-
-                this.setState(({ data }) => ({
-                    data: data.mergeDeep({components, view: response})
-                }));
+                this.setState(({ data }) => ({ data: data.merge({view: response, components: response.pipelines}) }));
             },
             error: (xhr, status, error) => {
                 this.setState({error: 'Error communicating to server! ' + error});
@@ -45,14 +39,12 @@ export default class View extends React.Component {
     }
 
     render() {
-        const {error, data} = this.state;
-        if (error) {
-            return <div className="pipelineerror">{error}</div>;
-        }
+        const {error, data: {view, components}} = this.state;
 
         return (<div>
+            {error ? <div className="pipelineerror">{error}</div> : undefined}
             <div className="pipeline-logo"></div>
-            {(data.get('components') || []).map(component => <Component key={component.get('name')} view={data.get('view')} component={component} />)}
+            {components.map(component => <Component key={component.name} view={view} component={component} />)}
         </div>);
     }
 }

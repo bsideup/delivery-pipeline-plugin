@@ -5,10 +5,9 @@ import React from 'react';
 export default class Description extends React.Component {
 
     render() {
-        const { view, task } = this.props;
+        const { view: {showDescription}, task: {description} } = this.props;
 
-        const description = task.get('description');
-        if (!view.get('showDescription') || !description) {
+        if (!showDescription || !description) {
             return false;
         }
 

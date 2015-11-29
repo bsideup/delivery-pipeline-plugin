@@ -15,7 +15,7 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'target', 'delivery-pipeline-plugin'),
         filename: 'pipe.js',
-        publicPath: '/static/efce61a1/plugin/delivery-pipeline-plugin/'
+        publicPath: '/plugin/delivery-pipeline-plugin/'
     },
     module: {
         preLoaders: [
@@ -51,14 +51,15 @@ module.exports = {
         port: 3000,
         host: '0.0.0.0',
         proxy: {
+            // Ugly hack to workaround Jenkins's static file URLs
+            '/static/*/plugin/delivery-pipeline-plugin/*': {
+                target: 'http://localhost:3000/',
+                secure: false,
+                rewrite: (req) => req.url = '/' + req.url.split('/').splice(3).join('/')
+            },
             '*': {
                 target: 'http://localhost:8080/',
-                secure: false,
-                bypass: function(req, res, proxyOptions) {
-                    if (req.url.endsWith('/plugin/delivery-pipeline-plugin/pipe.js')) {
-                        return '/target/delivery-pipeline-plugin/pipe.js';
-                    }
-                }
+                secure: false
             }
         }
     }

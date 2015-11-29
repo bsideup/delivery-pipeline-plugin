@@ -108,7 +108,7 @@ export default class Graph extends React.Component {
         const g = this.g = new dagre.graphlib.Graph();
 
         g.setGraph({
-            nodesep: 20,
+            nodesep: 40,
             ranksep: 20,
             rankdir: 'LR',
             align: 'UL'

@@ -4,11 +4,11 @@ import React from 'react';
 
 class TestResult extends React.Component {
     render() {
-        const result = this.props.result;
+        const {result: {url, name, total, failed, skipped}} = this.props;
 
         return (<div className="infoPanel">
             <div className="infoPanelInner">
-                <a href={`${window.rootURL}/${result.get('url')}`}>{result.get('name')}</a>
+                <a href={`${window.rootURL}/${url}`}>{resultname}</a>
                 <table id="priority.summary" className="pane">
                     <tbody>
                         <tr>
@@ -19,9 +19,9 @@ class TestResult extends React.Component {
                     </tbody>
                     <tbody>
                         <tr>
-                            <td className="pane">{result.get('total')}</td>
-                            <td className="pane">{result.get('failed')}</td>
-                            <td className="pane">{result.get('skipped')}</td>
+                            <td className="pane">{total}</td>
+                            <td className="pane">{failed}</td>
+                            <td className="pane">{skipped}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -32,16 +32,14 @@ class TestResult extends React.Component {
 
 export default class TestResults extends React.Component {
     render() {
-        const view = this.props.view;
-        const task = this.props.task;
+        const {view: {showTestResults}, task: {testResults}} = this.props;
 
-        const testResults = task.get('testResults');
-        if (!view.get('showTestResults') || !testResults || testResults.isEmpty()) {
+        if (!showTestResults || !testResults || testResults.isEmpty()) {
             return false;
         }
 
         return (<div className="infoPanelOuter">
-            {testResults.map(result => <TestResult key={result.get('name')} {...this.props} result={result} />)}
+            {testResults.map(result => <TestResult key={result.name} result={result} />)}
         </div>);
     }
 }
