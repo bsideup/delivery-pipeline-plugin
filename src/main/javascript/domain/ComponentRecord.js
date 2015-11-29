@@ -2,7 +2,7 @@
 
 import { Maybe, Record, List } from 'typed-immutable';
 
-import PipelineRecord from './PipelineRecord.js';
+import PipelineRecord from './PipelineRecord';
 
 export default class ComponentRecord extends Record({
     name: String,

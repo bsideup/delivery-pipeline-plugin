@@ -2,12 +2,12 @@
 
 import React from 'react';
 import moment from 'moment';
-import formatDuration from 'utils/formatDuration.js';
+import formatDuration from 'utils/formatDuration';
 
-import Description from './widgets/Description.jsx';
-import TestResults from './widgets/TestResults.jsx';
-import StaticAnalysisResults from './widgets/StaticAnalysisResults.jsx';
-import Promotions from './widgets/Promotions.jsx';
+import Description from './widgets/Description';
+import TestResults from './widgets/TestResults';
+import StaticAnalysisResults from './widgets/StaticAnalysisResults';
+import Promotions from './widgets/Promotions';
 
 export default class Task extends React.Component {
 

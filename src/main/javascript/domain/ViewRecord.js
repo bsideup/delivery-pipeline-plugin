@@ -2,7 +2,7 @@
 
 import { Maybe, Record, List } from 'typed-immutable';
 
-import ComponentRecord from './ComponentRecord.js';
+import ComponentRecord from './ComponentRecord';
 
 export default class ViewRecord extends Record({
     aggregatedChangesGroupingPattern: Maybe(String),

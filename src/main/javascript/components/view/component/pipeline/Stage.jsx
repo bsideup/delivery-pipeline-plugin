@@ -3,7 +3,7 @@
 import React from 'react';
 import immutablediff from 'immutablediff';
 
-import Task from './stage/Task.jsx';
+import Task from './stage/Task';
 
 export default class Stage extends React.Component {
 

@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import Pipeline from './Pipeline.jsx';
+import Pipeline from './Pipeline';
 
 export default class AggregatedPipeline extends Pipeline {
     renderHeader() {

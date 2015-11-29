@@ -2,8 +2,8 @@
 
 import { Maybe, Record, List } from 'typed-immutable';
 
-import ViewRecord from './ViewRecord.js';
-import ComponentRecord from './ComponentRecord.js';
+import ViewRecord from './ViewRecord';
+import ComponentRecord from './ComponentRecord';
 
 export default class DataRecord extends Record({
     view: Maybe(ViewRecord),

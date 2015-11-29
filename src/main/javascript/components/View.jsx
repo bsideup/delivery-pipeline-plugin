@@ -3,8 +3,8 @@
 import React from 'react';
 import Immutable from 'immutable';
 
-import DataRecord from 'domain/DataRecord.js';
-import Component from './view/Component.jsx';
+import DataRecord from 'domain/DataRecord';
+import Component from './view/Component';
 
 export default class View extends React.Component {
 

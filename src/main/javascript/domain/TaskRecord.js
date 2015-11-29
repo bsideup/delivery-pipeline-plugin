@@ -2,10 +2,10 @@
 
 import { Maybe, Record, List, Any } from 'typed-immutable';
 
-import TestResultRecord from './TestResultRecord.js';
-import StaticAnalysisResultRecord from './StaticAnalysisResultRecord.js';
-import TaskStatusRecord from './TaskStatusRecord.js';
-import ManualStepRecord from './ManualStepRecord.js';
+import TestResultRecord from './TestResultRecord';
+import StaticAnalysisResultRecord from './StaticAnalysisResultRecord';
+import TaskStatusRecord from './TaskStatusRecord';
+import ManualStepRecord from './ManualStepRecord';
 
 export default class TaskRecord extends Record({
     id: String,

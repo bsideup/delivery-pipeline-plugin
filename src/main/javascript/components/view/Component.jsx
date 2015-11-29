@@ -3,8 +3,8 @@
 import React from 'react';
 import immutablediff from 'immutablediff';
 
-import Pipeline from './component/Pipeline.jsx';
-import AggregatedPipeline from './component/AggregatedPipeline.jsx';
+import Pipeline from './component/Pipeline';
+import AggregatedPipeline from './component/AggregatedPipeline';
 
 export default class Component extends React.Component {
     buildNow() {

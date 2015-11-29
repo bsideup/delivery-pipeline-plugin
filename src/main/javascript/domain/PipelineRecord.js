@@ -2,8 +2,8 @@
 
 import { Maybe, Record, List } from 'typed-immutable';
 
-import StageRecord from './StageRecord.js';
-import PipelineChangeRecord from './PipelineChangeRecord.js';
+import StageRecord from './StageRecord';
+import PipelineChangeRecord from './PipelineChangeRecord';
 
 export default class PipelineRecord extends Record({
     name: String,

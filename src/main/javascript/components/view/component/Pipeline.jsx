@@ -4,9 +4,9 @@ import React from 'react';
 import moment from 'moment';
 import immutablediff from 'immutablediff';
 
-import Graph from './pipeline/Graph.jsx';
-import Stage from './pipeline/Stage.jsx';
-import formatDuration from 'utils/formatDuration.js';
+import Graph from './pipeline/Graph';
+import Stage from './pipeline/Stage';
+import formatDuration from 'utils/formatDuration';
 
 class Change extends React.Component {
     render() {

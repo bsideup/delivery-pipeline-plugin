@@ -2,7 +2,7 @@
 
 import { Maybe, Record, List, Any } from 'typed-immutable';
 
-import TaskRecord from './TaskRecord.js';
+import TaskRecord from './TaskRecord';
 
 export default class StageRecord extends Record({
     name: String,
