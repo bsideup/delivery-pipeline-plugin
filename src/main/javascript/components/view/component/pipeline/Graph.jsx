@@ -6,41 +6,17 @@ import dagre from 'dagre';
 
 class GraphNode extends React.Component {
 
-    constructor() {
-        super();
-
-        this.state = {
-            x: 0,
-            y: 0
-        };
-    }
-
     render() {
-        return (<div style={{ position: 'absolute', left: this.state.x, top: this.state.y }}>
+        return (<div style={{ position: 'absolute' }}>
             {this.props.nodeRenderer(this.props)}
         </div>);
     }
 }
 
 class GraphEdge extends React.Component {
-    constructor() {
-        super();
-
-        this.state = {
-            points: []
-        };
-    }
 
     render() {
-        let points = this.state.points;
-
-        if (!points || points.length < 2) {
-            points = [{ x: 0, y: 0 }];
-        }
-
-        const d = 'M' + points.map(({ x, y }) => `${x} ${y}`).join(' L');
-
-        return <path className="connect" d={d} stroke="#888888" strokeWidth="2" fill="none" />;
+        return <path className="connect" stroke="#888888" strokeWidth="2" fill="none" />;
     }
 }
 
@@ -73,9 +49,16 @@ export default class Graph extends React.Component {
         for (let edgeId of g.edges()) {
             const edge = g.edge(edgeId);
 
-            edge.input.setState({
-                points: edge.points
-            });
+            var points = edge.points;
+            if (!points || points.length < 2) {
+                points = [{ x: 0, y: 0 }];
+            }
+
+            const d = 'M' + points.map(({ x, y }) => `${x} ${y}`).join(' L');
+
+            const edgeDOM = ReactDOM.findDOMNode(edge.input);
+
+            edgeDOM.setAttribute('d', d);
         }
 
         let maxWidth = 0;
@@ -85,21 +68,23 @@ export default class Graph extends React.Component {
 
             const { x, y, width, height } = node;
 
-            node.input.setState({
-                x: x - width * 0.5,
-                y: y - height * 0.5
-            });
+            const nodeDOM = ReactDOM.findDOMNode(node.input);
+
+            // Kids, don't try this at home :)
+            // We set it here because at the moment of render we don't know width/height of nodes
+            nodeDOM.style.left = `${x - width * 0.5}px`;
+            nodeDOM.style.top = `${y - height * 0.5}px`;
 
             maxWidth = Math.max(maxWidth, x + width * 0.5);
             maxHeight = Math.max(maxHeight, y + height * 0.5);
         }
 
-        const domNode = ReactDOM.findDOMNode(this);
+        const graphDOM = ReactDOM.findDOMNode(this);
 
         // Kids, don't try this at home :)
         // We set it here because at the moment of render we don't know width/height of nodes
-        domNode.style.width = `${maxWidth}px`;
-        domNode.style.height = `${maxHeight}px`;
+        graphDOM.style.width = `${maxWidth}px`;
+        graphDOM.style.height = `${maxHeight}px`;
     }
 
     render() {

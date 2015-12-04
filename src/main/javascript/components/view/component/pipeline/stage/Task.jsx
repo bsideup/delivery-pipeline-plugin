@@ -14,9 +14,9 @@ export default class Task extends React.Component {
     triggerManual() {
         const { task } = this.props;
 
-        var { id: project, manualStep: { upstreamProject: upstream, upstreamId: buildId } } = task;
+        const { id: project, manualStep: { upstreamProject: upstream, upstreamId: buildId } } = task;
 
-        var formData = { project, upstream, buildId };
+        const formData = { project, upstream, buildId };
 
         var before;
         if (crumb.value !== null && crumb.value !== '') {

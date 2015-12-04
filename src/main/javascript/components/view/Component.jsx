@@ -1,7 +1,6 @@
 'use strict';
 
 import React from 'react';
-import immutablediff from 'immutablediff';
 
 import Pipeline from './component/Pipeline';
 import AggregatedPipeline from './component/AggregatedPipeline';
@@ -36,19 +35,7 @@ export default class Component extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (!nextProps.view.equals(this.props.view)) {
-            // Uncomment this line to get powerful overview of changes
-            // console.table(immutablediff(this.props.view, nextProps.view).toJS());
-            return true;
-        }
-
-        if (!nextProps.component.equals(this.props.component)) {
-            // Uncomment this line to get powerful overview of changes
-            // console.table(immutablediff(this.props.component, nextProps.component).toJS());
-            return true;
-        }
-
-        return false;
+        return !nextProps.view.equals(this.props.view) || !nextProps.component.equals(this.props.component);
     }
 
     render() {
