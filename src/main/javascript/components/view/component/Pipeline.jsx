@@ -95,7 +95,7 @@ export default class Pipeline extends React.Component {
             }
         }
 
-        const nodeRenderer = (props) => <Stage view={view} showVersion={aggregated} stage={props.node.stage} />; // eslint-disable-line react/jsx-key
+        const nodeRenderer = (node) => <Stage view={view} showVersion={aggregated} stage={node.stage} />; // eslint-disable-line react/jsx-key
 
         return (<div style={{ marginBottom: 20 }}>
             {this.renderHeader()}

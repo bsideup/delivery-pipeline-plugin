@@ -4,25 +4,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import dagre from 'dagre';
 
-class GraphNode extends React.Component {
-
-    render() {
-        return (<div style={{ position: 'absolute' }}>
-            {this.props.nodeRenderer(this.props)}
-        </div>);
-    }
-}
-
-class GraphEdge extends React.Component {
-
-    render() {
-        return <path className="connect" stroke="#888888" strokeWidth="2" fill="none" />;
-    }
-}
-
 export default class Graph extends React.Component {
 
     componentDidMount() {
+        this.forceUpdate();
+        // Request 1 frame because we want CSS to be applied to our nodes before we calculate width
         this.layout();
     }
 
@@ -115,12 +101,15 @@ export default class Graph extends React.Component {
 
         return (<div style={{ position: 'relative' }}>
             <svg width="100%" height="100%">
-                {g.edges().map(id => <GraphEdge key={`${id.v}=>${id.w}`} ref={input => g.edge(id).input = input} />)}
+                {g.edges().map(id => (
+                    <path key={`${id.v}=>${id.w}`} ref={input => g.edge(id).input = input} className="connect" stroke="#888888" strokeWidth="2" fill="none" />
+                ))}
             </svg>
-            {g.nodes().map(id => {
-                const node = g.node(id);
-                return <GraphNode key={id} node={node} nodeRenderer={this.props.nodeRenderer} ref={input => node.input = input} />;
-            })}
+            {g.nodes().map(id => g.node(id)).map(node => (
+                <div key={node.id} ref={input => node.input = input} style={{ position: 'absolute', 'markerEnd': 'url(#markerArrow)' }}>
+                    {this.props.nodeRenderer(node)}
+                </div>
+            ))}
         </div>);
     }
 }
